@@ -1,0 +1,6 @@
+@CargoTransAPI_HostAddress = http://localhost:5097
+
+GET {{CargoTransAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
