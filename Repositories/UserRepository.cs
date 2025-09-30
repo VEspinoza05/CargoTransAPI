@@ -52,5 +52,12 @@ namespace CargoTransAPI.Repositories
                 return null;
             }
         }
+
+        public async Task<UserModel> UpdateUserAsync(UserModel user)
+        {
+            DocumentReference docRef = _usersCollection.Document(user.UserId);
+            await docRef.SetAsync(user, SetOptions.Overwrite);
+            return user;
+        }
     }
 }

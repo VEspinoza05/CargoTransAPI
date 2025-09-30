@@ -37,5 +37,12 @@ namespace CargoTransAPI
             return createdUser is null ? CreatedAtAction("Post", new { id = createdUser.UserId }, user) : StatusCode(500);
         }
 
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Update(string id, UserModel user)
+        {
+            user.UserId = id;
+            var updatedUser = await _userRepository.UpdateUserAsync(user);
+            return Ok(updatedUser);
+        }
     }
 }
