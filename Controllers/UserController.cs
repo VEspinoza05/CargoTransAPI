@@ -22,5 +22,12 @@ namespace CargoTransAPI
             var users = await _userRepository.GetAllUsersAsync();
             return Ok(users);
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UserModel>> GetUserById(string id)
+        {
+            var user = await _userRepository.GetUserAsync(id);
+            return user is null ? NotFound() : Ok(user);
+        }
     }
 }

@@ -25,5 +25,15 @@ namespace CargoTransAPI.Repositories
             })
             .ToList();
         }
+
+        public async Task<UserModel?> GetUserAsync(string id)
+        {
+            var doc = await _usersCollection.Document(id).GetSnapshotAsync();
+            var user = doc.Exists ? doc.ConvertTo<UserModel>() : null;
+            if (user != null) {
+                user.UserId = id;
+            }
+            return user;
+        }
     }
 }
