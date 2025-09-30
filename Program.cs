@@ -1,3 +1,4 @@
+using CargoTransAPI.Repositories;
 using Google.Cloud.Firestore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,11 +8,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
+
+// Inyect FirestoreDb
 builder.Services.AddSingleton(provider =>
 {
     string projectId = "cargotrans-473716";
     return FirestoreDb.Create(projectId);
 });
+
+// Inyect UserRepository
+builder.Services.AddScoped<UserRepository>();
 
 var app = builder.Build();
 

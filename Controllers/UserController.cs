@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Google.Cloud.Firestore;
 using CargoTransAPI.Models;
+using CargoTransAPI.Repositories;
 
 namespace CargoTransAPI
 {
@@ -8,42 +9,17 @@ namespace CargoTransAPI
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly FirestoreDb _firestoreDb;
+        private readonly UserRepository _userRepository;
 
-        public UserController(FirestoreDb firestoreDb)
+        public UserController(UserRepository userRepository)
         {
-            _firestoreDb = firestoreDb;
+            _userRepository = userRepository;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllUsers()
         {
-            var users = new List<UserModel>();
-
-            try
-            {
-                var usersCollection = _firestoreDb.Collection("user");
-
-                if (usersCollection != null)
-                {
-                    var userList = await usersCollection.GetSnapshotAsync();
-
-                    foreach (var user in userList.Documents)
-                    {
-                        // create user object using the fields of the record
-                        UserModel u = new UserModel();
-                        u.Name = user.GetValue<string>("name");
-                        u.Email = user.GetValue<string>("email");
-
-                        users.Add(u);
-                    }
-                }
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Exception: " + e);
-            }
+            var users = await _userRepository.GetAllUsersAsync();
             return Ok(users);
         }
     }
