@@ -44,5 +44,12 @@ namespace CargoTransAPI
             var updatedUser = await _userRepository.UpdateUserAsync(user);
             return Ok(updatedUser);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(string id)
+        {
+            await _userRepository.DeleteUserAsync(id);
+            return NoContent();
+        }
     }
 }

@@ -59,5 +59,10 @@ namespace CargoTransAPI.Repositories
             await docRef.SetAsync(user, SetOptions.Overwrite);
             return user;
         }
+
+        public async Task DeleteUserAsync(string id)
+        {
+            await _usersCollection.Document(id).DeleteAsync();
+        }
     }
 }
