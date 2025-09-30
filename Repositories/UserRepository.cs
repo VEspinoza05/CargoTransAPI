@@ -30,10 +30,27 @@ namespace CargoTransAPI.Repositories
         {
             var doc = await _usersCollection.Document(id).GetSnapshotAsync();
             var user = doc.Exists ? doc.ConvertTo<UserModel>() : null;
-            if (user != null) {
+            if (user != null)
+            {
                 user.UserId = id;
             }
             return user;
+        }
+
+        public async Task<UserModel?> CreateUserAsync(UserModel user)
+        {
+            DocumentReference docRef = _usersCollection.Document();
+            await docRef.SetAsync(user);
+            string newDocId = docRef.Id;
+            DocumentSnapshot snapshot = await docRef.GetSnapshotAsync();
+            if (snapshot.Exists)
+            {
+                return snapshot.ConvertTo<UserModel>();
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

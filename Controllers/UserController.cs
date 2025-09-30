@@ -29,5 +29,13 @@ namespace CargoTransAPI
             var user = await _userRepository.GetUserAsync(id);
             return user is null ? NotFound() : Ok(user);
         }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateUser(UserModel user)
+        {
+            var createdUser = await _userRepository.CreateUserAsync(user);
+            return createdUser is null ? CreatedAtAction("Post", new { id = createdUser.UserId }, user) : StatusCode(500);
+        }
+
     }
 }
