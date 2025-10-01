@@ -1,10 +1,28 @@
-public class ShipmentModel
+using Google.Cloud.Firestore;
+
+namespace CargoTransAPI.Models
 {
-    public string ShipmentId { get; set; }
-    public DateTime ShippingDate { get; set; }
-    public string OriginBranch { get; set; }
-    public string DestinyBranch { get; set; }
-    public ShippingStateEnum State { get; set; }
-    public string CustomerName { get; set; }
-    public string UserId { get; set; }
+    [FirestoreData]
+    public class ShipmentModel
+    {
+        public string ShipmentId { get; set; } = string.Empty;
+
+        [FirestoreProperty("shippingDate")]
+        public DateTime ShippingDate { get; set; }
+
+        [FirestoreProperty("originBranchId")]
+        public string OriginBranchId { get; set; } = string.Empty;
+
+        [FirestoreProperty("destinationBranchId")]
+        public string DestinationBranchId { get; set; } = string.Empty;
+
+        [FirestoreProperty("state")]
+        public string State { get; set; } = string.Empty;
+
+        [FirestoreProperty("customerName")]
+        public string CustomerName { get; set; } = string.Empty;
+
+        [FirestoreProperty("userId")]
+        public string UserId { get; set; } = string.Empty;
+    }
 }
