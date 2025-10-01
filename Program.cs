@@ -1,7 +1,16 @@
 using CargoTransAPI.Repositories;
 using Google.Cloud.Firestore;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Intialize Firebase admin SDK
+FirebaseApp.Create(new AppOptions()
+{
+    Credential = GoogleCredential.FromFile("C:\\GoogleAppCred\\cargotrans-473716-firebase-adminsdk-fbsvc-eb7fa84553.json")
+});
+
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

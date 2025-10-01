@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using Google.Cloud.Firestore;
 using CargoTransAPI.Models;
 using CargoTransAPI.Repositories;
+using CargoTransAPI.Attributes;
+using CargoTransAPI.DTOs;
+using FirebaseAdmin.Auth;
 
 namespace CargoTransAPI
 {
@@ -17,6 +20,7 @@ namespace CargoTransAPI
         }
 
         [HttpGet]
+        [FirebaseAuthorize("Administrador")] 
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _userRepository.GetAllUsersAsync();
@@ -31,10 +35,40 @@ namespace CargoTransAPI
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateUser(UserModel user)
+        public async Task<IActionResult> CreateUser([FromBody] UserCreationDTO request)
         {
-            var createdUser = await _userRepository.CreateUserAsync(user);
-            return createdUser is null ? CreatedAtAction("Post", new { id = createdUser.UserId }, user) : StatusCode(500);
+            try
+            {
+                var userArgs = new UserRecordArgs()
+                {
+                    Email = request.Email,
+                    Password = request.Password,
+                    DisplayName = request.DisplayName,
+                    EmailVerified = false,
+                    Disabled = false,
+                };
+
+                var userRecord = await FirebaseAuth.DefaultInstance.CreateUserAsync(userArgs);
+
+                var claims = new Dictionary<string, object>()
+                {
+                    { "role", request.Role }
+                };
+
+                await FirebaseAuth.DefaultInstance.SetCustomUserClaimsAsync(userRecord.Uid, claims);
+
+                return Ok(new
+                {
+                    Message = "Usuario creado exitosamente",
+                    Uid = userRecord.Uid,
+                    Email = userRecord.Email,
+                    Role = request.Role
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Error = ex.Message });
+            }
         }
 
         [HttpPut("{id}")]
