@@ -24,5 +24,7 @@ namespace CargoTransAPI.Models
 
         [FirestoreProperty("userId")]
         public string UserId { get; set; } = string.Empty;
+
+        public UserModel? UserData { get; set; }
     }
 }
