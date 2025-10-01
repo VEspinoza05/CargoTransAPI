@@ -10,11 +10,11 @@ namespace CargoTransAPI.Models
         [FirestoreProperty("shippingDate")]
         public DateTime ShippingDate { get; set; }
 
-        [FirestoreProperty("originBranchId")]
-        public string OriginBranchId { get; set; } = string.Empty;
+        [FirestoreProperty("originBranch")]
+        public string OriginBranch { get; set; } = string.Empty;
 
-        [FirestoreProperty("destinationBranchId")]
-        public string DestinationBranchId { get; set; } = string.Empty;
+        [FirestoreProperty("destinationBranch")]
+        public string DestinationBranch { get; set; } = string.Empty;
 
         [FirestoreProperty("state")]
         public string State { get; set; } = string.Empty;
