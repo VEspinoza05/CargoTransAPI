@@ -7,6 +7,18 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// CORS Policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5173")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+}); 
+
 // Intialize Firebase admin SDK
 FirebaseApp.Create(new AppOptions()
 {
@@ -62,6 +74,9 @@ builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<ShipmentRepository>();
 
 var app = builder.Build();
+
+// Use Cors
+app.UseCors("AllowReactApp");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
