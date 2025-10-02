@@ -1,3 +1,4 @@
+using CargoTransAPI.Attributes;
 using CargoTransAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,8 +16,10 @@ namespace CargoTransAPI
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllUsers()
+        [FirebaseAuthorize("Administrador","Encargado")] 
+        public async Task<IActionResult> GetAllShipments()
         {
+
             var shipments = await _shipmentRepository.GetAllShipmentsAsync();
             return Ok(shipments);
         }

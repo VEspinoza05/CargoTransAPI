@@ -10,6 +10,7 @@ namespace CargoTransAPI.DTOs
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
         public string DisplayName { get; set; } = string.Empty;
-        public string Role { get; set; } = "user"; // por defecto user
+        public string Role { get; set; } = "Encargado";
+        public string branchCity { get; set; } = string.Empty;
     }
 }

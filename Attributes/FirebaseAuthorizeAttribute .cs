@@ -4,14 +4,13 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace CargoTransAPI.Attributes
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class FirebaseAuthorizeAttribute : Attribute, IAuthorizationFilter
     {
-        private readonly string _role;
+        private readonly string[] _roles;
 
-        public FirebaseAuthorizeAttribute(string role)
+        public FirebaseAuthorizeAttribute(params string[] roles)
         {
-            _role = role;
+            _roles = roles;
         }
 
         public void OnAuthorization(AuthorizationFilterContext context)
@@ -25,14 +24,16 @@ namespace CargoTransAPI.Attributes
 
             if (firebaseToken.Claims.TryGetValue("role", out var roleValue))
             {
-                if (roleValue.ToString() != _role)
+                var userRole = roleValue.ToString();
+
+                if (!_roles.Contains(userRole))
                 {
-                    context.Result = new ForbidResult();
+                    context.Result = new StatusCodeResult(StatusCodes.Status403Forbidden);
                 }
             }
             else
             {
-                context.Result = new ForbidResult();
+                context.Result = new StatusCodeResult(StatusCodes.Status403Forbidden);
             }
         }
     }

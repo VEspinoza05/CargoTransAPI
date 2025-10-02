@@ -52,7 +52,8 @@ namespace CargoTransAPI
 
                 var claims = new Dictionary<string, object>()
                 {
-                    { "role", request.Role }
+                    { "role", request.Role },
+                    { "branchCity", request.branchCity }
                 };
 
                 await FirebaseAuth.DefaultInstance.SetCustomUserClaimsAsync(userRecord.Uid, claims);
