@@ -19,6 +19,7 @@ namespace CargoTransAPI
             _userRepository = userRepository;
         }
 
+        /* These routes were Uncommented because at the moment, they are not necessary
         [HttpGet]
         [FirebaseAuthorize("Administrador")] 
         public async Task<IActionResult> GetAllUsers()
@@ -27,14 +28,17 @@ namespace CargoTransAPI
             return Ok(users);
         }
 
+        
         [HttpGet("{id}")]
         public async Task<ActionResult<UserModel>> GetUserById(string id)
         {
             var user = await _userRepository.GetUserAsync(id);
             return user is null ? NotFound() : Ok(user);
         }
+        */
 
         [HttpPost]
+        [FirebaseAuthorize("Administrador")]
         public async Task<IActionResult> CreateUser([FromBody] UserCreationDTO request)
         {
             try
@@ -72,6 +76,7 @@ namespace CargoTransAPI
             }
         }
 
+        /* These routes were Uncommented because at the moment, they are not necessary
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(string id, UserModel user)
         {
@@ -86,5 +91,6 @@ namespace CargoTransAPI
             await _userRepository.DeleteUserAsync(id);
             return NoContent();
         }
+        */
     }
 }
