@@ -1,4 +1,5 @@
 using CargoTransAPI.Attributes;
+using CargoTransAPI.DTOs;
 using CargoTransAPI.Extensions;
 using CargoTransAPI.Models;
 using CargoTransAPI.Repositories;
@@ -18,7 +19,7 @@ namespace CargoTransAPI
         }
 
         [HttpGet]
-        [FirebaseAuthorize("Administrador","Encargado")] 
+        [FirebaseAuthorize("Administrador", "Encargado")]
         public async Task<IActionResult> GetAllShipments(string isOriginOrDestination = "")
         {
             var role = HttpContext.GetUserRole();
@@ -45,8 +46,29 @@ namespace CargoTransAPI
             {
                 shipments = await _shipmentRepository.GetAllShipmentsAsync();
             }
-            
+
             return Ok(shipments);
+        }
+
+        [HttpPost]
+        [FirebaseAuthorize("Encargado")]
+        public async Task<IActionResult> CreateShipment(NewShipmentDTO newShipmentDTO)
+        {
+            string city = HttpContext.GetUserBranchCity();
+            string username = await HttpContext.GetUserDisplayNameAsync();
+
+            ShipmentModel shipment = new ShipmentModel()
+            {
+                ShippingDate = newShipmentDTO.ShippingDate,
+                OriginBranch = city,
+                DestinationBranch = newShipmentDTO.DestinationBranch,
+                State = "Enviado",
+                CustomerName = newShipmentDTO.CustomerName,
+                UserName = username,
+            };
+
+            await _shipmentRepository.CreateShipmentAsync(shipment);
+            return Ok();
         }
     }
 }

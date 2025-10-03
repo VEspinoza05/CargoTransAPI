@@ -1,3 +1,4 @@
+using CargoTransAPI.DTOs;
 using CargoTransAPI.Models;
 using Google.Cloud.Firestore;
 
@@ -39,6 +40,12 @@ namespace CargoTransAPI.Repositories
             .ToList();
 
             return shipments;
+        }
+
+        public async Task CreateShipmentAsync(ShipmentModel shipment)
+        {
+            DocumentReference docRef = _shipmentsCollection.Document();
+            await docRef.SetAsync(shipment);
         }
     }
 }

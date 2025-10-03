@@ -36,6 +36,15 @@ namespace CargoTransAPI.Extensions
             }
             return null;
         }
+
+        public static async Task<string?> GetUserDisplayNameAsync(this HttpContext context)
+        {
+            var uid = context.GetUserId();
+            if (uid == null) return null;
+
+            var user = await FirebaseAuth.DefaultInstance.GetUserAsync(uid);
+            return user.DisplayName;
+        }
     }
 
 }
