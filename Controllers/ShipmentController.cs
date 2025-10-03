@@ -1,4 +1,6 @@
 using CargoTransAPI.Attributes;
+using CargoTransAPI.Extensions;
+using CargoTransAPI.Models;
 using CargoTransAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,10 +19,33 @@ namespace CargoTransAPI
 
         [HttpGet]
         [FirebaseAuthorize("Administrador","Encargado")] 
-        public async Task<IActionResult> GetAllShipments()
+        public async Task<IActionResult> GetAllShipments(string isOriginOrDestination = "")
         {
+            var role = HttpContext.GetUserRole();
+            List<ShipmentModel> shipments = new List<ShipmentModel>();
 
-            var shipments = await _shipmentRepository.GetAllShipmentsAsync();
+            if (role == "Encargado")
+            {
+                var city = HttpContext.GetUserBranchCity();
+
+                if (isOriginOrDestination == "origin")
+                {
+                    shipments = await _shipmentRepository.GetAllShipmentsAsync(city, "originBranch");
+                }
+                else if (isOriginOrDestination == "destination")
+                {
+                    shipments = await _shipmentRepository.GetAllShipmentsAsync(city, "destinationBranch");
+                }
+                else
+                {
+                    return Ok(shipments);
+                }
+            }
+            else
+            {
+                shipments = await _shipmentRepository.GetAllShipmentsAsync();
+            }
+            
             return Ok(shipments);
         }
     }

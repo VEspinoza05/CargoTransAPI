@@ -22,9 +22,7 @@ namespace CargoTransAPI.Models
         [FirestoreProperty("customerName")]
         public string CustomerName { get; set; } = string.Empty;
 
-        [FirestoreProperty("userId")]
-        public string UserId { get; set; } = string.Empty;
-
-        public UserModel? UserData { get; set; }
+        [FirestoreProperty("username")]
+        public string UserName { get; set; } = string.Empty;
     }
 }

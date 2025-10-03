@@ -16,9 +16,20 @@ namespace CargoTransAPI.Repositories
             _shipmentsCollection = _db.Collection("shipment");
         }
 
-        public async Task<List<ShipmentModel>> GetAllShipmentsAsync()
+        public async Task<List<ShipmentModel>> GetAllShipmentsAsync(string? city = null, string? isOriginOrDestination = null)
         {
-            var snapshot = await _shipmentsCollection.GetSnapshotAsync();
+            QuerySnapshot snapshot;
+
+            if (isOriginOrDestination != null && city != null)
+            {
+                Query query = _shipmentsCollection.WhereEqualTo(isOriginOrDestination, city);
+                snapshot = await query.GetSnapshotAsync();
+            }
+            else
+            {
+                snapshot = await _shipmentsCollection.GetSnapshotAsync();
+            }
+
             var shipments = snapshot.Documents.Select(d =>
             {
                 var shipment = d.ConvertTo<ShipmentModel>();
@@ -26,11 +37,6 @@ namespace CargoTransAPI.Repositories
                 return shipment;
             })
             .ToList();
-
-            foreach (var shipment in shipments)
-            {
-                shipment.UserData = await _userRepository.GetUserAsync(shipment.UserId);
-            }
 
             return shipments;
         }
