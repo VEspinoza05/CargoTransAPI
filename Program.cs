@@ -10,19 +10,20 @@ var builder = WebApplication.CreateBuilder(args);
 // CORS Policy
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowReactApp",
+    options.AddPolicy("AllowAll",
         policy =>
         {
-            policy.WithOrigins("http://localhost:5173")
-                  .AllowAnyHeader()
-                  .AllowAnyMethod();
+            policy
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
         });
 }); 
 
 // Intialize Firebase admin SDK
 FirebaseApp.Create(new AppOptions()
 {
-    Credential = GoogleCredential.FromFile("C:\\GoogleAppCred\\cargotrans-473716-firebase-adminsdk-fbsvc-eb7fa84553.json")
+    Credential = GoogleCredential.GetApplicationDefault()
 });
 
 
@@ -76,7 +77,7 @@ builder.Services.AddScoped<ShipmentRepository>();
 var app = builder.Build();
 
 // Use Cors
-app.UseCors("AllowReactApp");
+app.UseCors("AllowAll");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
