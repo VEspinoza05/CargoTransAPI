@@ -73,6 +73,7 @@ builder.Services.AddSingleton(provider =>
 // Inyect UserRepository
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<ShipmentRepository>();
+builder.Services.AddScoped<LoginLogRepository>();
 
 var app = builder.Build();
 
