@@ -18,5 +18,8 @@ namespace CargoTransAPI.Models
 
         [FirestoreProperty("timestamp")]
         public DateTime Timestamp { get; set; }
+
+        [FirestoreProperty("role")]
+        public string Role { get; set; }  = string.Empty;
     }
 }

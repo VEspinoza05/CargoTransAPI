@@ -25,5 +25,11 @@ namespace CargoTransAPI.Repositories
             })
             .ToList();
         }
+
+        public async Task CreateLoginLogAsync(LoginLogModel loginLog)
+        {
+            DocumentReference docRef = _loginLogsCollection.Document();
+            await docRef.SetAsync(loginLog);
+        }
     }
 }

@@ -1,4 +1,7 @@
 using CargoTransAPI.Attributes;
+using CargoTransAPI.DTOs;
+using CargoTransAPI.Extensions;
+using CargoTransAPI.Models;
 using CargoTransAPI.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +24,23 @@ namespace CargoTransAPI.Controllers
         {
             var loginLogs = await _loginLogRepository.GetLoginLogsAsync();
             return Ok(loginLogs);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateLoginLog()
+        {
+            LoginLogModel loginLog = new LoginLogModel()
+            {
+                UserId = HttpContext.GetUserId(),
+                Username = HttpContext.GetUsername(),
+                UserEmail = HttpContext.GetUserEmail(),
+                Timestamp = HttpContext.GetUserIssueTokenDate() ?? new DateTime(),
+                Role = HttpContext.GetUserRole(),
+            };
+            
+
+            await _loginLogRepository.CreateLoginLogAsync(loginLog);
+            return Ok();
         }
     }
 }
