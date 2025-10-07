@@ -21,5 +21,8 @@ namespace CargoTransAPI.Models
 
         [FirestoreProperty("role")]
         public string Role { get; set; }  = string.Empty;
+
+        [FirestoreProperty("branchCity")]
+        public string BranchCity { get; set; }  = string.Empty;
     }
 }

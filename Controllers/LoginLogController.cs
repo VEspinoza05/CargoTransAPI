@@ -36,6 +36,7 @@ namespace CargoTransAPI.Controllers
                 UserEmail = HttpContext.GetUserEmail(),
                 Timestamp = HttpContext.GetUserIssueTokenDate() ?? new DateTime(),
                 Role = HttpContext.GetUserRole(),
+                BranchCity = HttpContext.GetUserBranchCity(),
             };
             
 
