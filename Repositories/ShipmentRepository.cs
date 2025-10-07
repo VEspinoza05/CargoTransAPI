@@ -47,5 +47,17 @@ namespace CargoTransAPI.Repositories
             DocumentReference docRef = _shipmentsCollection.Document();
             await docRef.SetAsync(shipment);
         }
+
+        public async Task UpdateShipmentStateAsync(string shipmentId, string state)
+        {
+            DocumentReference docRef = _shipmentsCollection.Document(shipmentId);
+
+            Dictionary<string, object> update = new Dictionary<string, object>
+            {
+                { "state", state },
+            };
+
+            await docRef.UpdateAsync(update);
+        }
     }
 }

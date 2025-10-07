@@ -70,5 +70,13 @@ namespace CargoTransAPI
             await _shipmentRepository.CreateShipmentAsync(shipment);
             return Ok();
         }
+
+        [HttpPut]
+        [FirebaseAuthorize("Encargado")]
+        public async Task<IActionResult> UpdateShipmentState(string shipmentId, string state)
+        {
+            await _shipmentRepository.UpdateShipmentStateAsync(shipmentId, state);
+            return NoContent();
+        }
     }
 }
